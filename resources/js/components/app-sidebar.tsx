@@ -26,11 +26,6 @@ const mainNavItems: NavItem[] = [
         icon: Users2,
     },
     {
-        title: 'Documents',
-        href: '/Admin/documents',
-        icon: Folder,
-    },
-    {
         title: 'Published Documents',
         href: '/Admin/published-documents',
         icon: FileText,
@@ -59,7 +54,7 @@ export function AppSidebar() {
                             <Link href="/dashboard" prefetch className="py-10 border-2 border-gray-200 bg-white dark:bg-neutral-900 dark:border-neutral-800">
                                 {state === 'collapsed' ? (
                                     <div className="flex items-center justify-center">
-                                        <WmsuLogo className="size-8" />
+                                        <WmsuLogo className="size-7" />
                                     </div>
                                 ) : (
                                     <div className="flex items-center justify-center">

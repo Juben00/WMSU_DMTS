@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, FileText, Eye, Calendar, User, Building, ArrowLeft } from 'lucide-react';
+import { useState } from 'react';
+import { Search, FileText, Eye, Calendar, User, Building } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,14 +12,11 @@ interface Document {
     description?: string;
     status: string;
     document_type: 'special_order' | 'order' | 'memorandum' | 'for_info';
-    is_public: boolean;
-    public_token: string;
     barcode_value?: string;
     created_at: string;
     owner: {
         id: number;
         name: string;
-        email: string;
         department: string;
     };
     files_count: number;

@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Plus, Trash2, Pencil, Eye, Users, Filter } from 'lucide-react';
+import { Plus, Trash2, Pencil, Eye } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import EditDepartment from '@/components/Departments/EditDepartment';
@@ -26,14 +26,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface Props {
     departments: Departments[];
-    auth: {
-        user: {
-            id: number;
-        };
-    };
 }
 
-export default function Departments({ departments, auth }: Props) {
+export default function Departments({ departments }: Props) {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [selectedOffice, setSelectedOffice] = useState<Departments | null>(null);

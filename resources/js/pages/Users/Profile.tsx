@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import React, { useState } from 'react';
+import { Head, useForm } from '@inertiajs/react';
 import Swal from 'sweetalert2';
 import Navbar from '@/components/User/navbar';
 import { User } from '@/types';

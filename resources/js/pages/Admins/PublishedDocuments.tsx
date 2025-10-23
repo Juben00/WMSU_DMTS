@@ -1,11 +1,11 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
@@ -24,7 +24,6 @@ import {
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import Swal from 'sweetalert2';
-import BarcodeComponent from '@/components/barcode';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -38,14 +37,12 @@ interface PublishedDocument {
     subject: string;
     description?: string;
     status: string;
-    is_public: boolean;
     public_token: string;
     barcode_value?: string;
     created_at: string;
     owner: {
         id: number;
         name: string;
-        email: string;
         office: string;
     };
     files_count: number;

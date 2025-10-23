@@ -1,17 +1,14 @@
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Separator } from '@/components/ui/separator';
 
 import { useState } from 'react';
 import {
-    BarChart3,
     Users,
     FileText,
     Building2,
@@ -19,20 +16,12 @@ import {
     TrendingUp,
     Calendar,
     Clock,
-    CheckCircle,
-    XCircle,
-    AlertCircle,
-    UserCheck,
-    UserX,
     Shield,
-    User,
     BarChart,
     PieChart
 } from 'lucide-react';
-import { toast } from 'sonner';
 import ReportGenerator from '@/components/Admin/ReportGenerator';
 
-// Chart components (we'll use a simple chart library)
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart as RechartsBarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 import { BreadcrumbItem } from '@/types';
 

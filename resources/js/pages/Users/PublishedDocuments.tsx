@@ -1,11 +1,10 @@
 import Navbar from '@/components/User/navbar'
-import React, { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { router, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -15,14 +14,11 @@ import {
     Trash2,
     Search,
     Calendar,
-    Download,
     BarChart3,
     User,
     ArrowLeft,
     FileCheck,
-    Users,
     Hash,
-    Building
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -34,7 +30,6 @@ interface PublishedDocument {
     subject: string;
     description?: string;
     status: string;
-    is_public: boolean;
     public_token: string;
     barcode_value?: string;
     created_at: string;
@@ -46,9 +41,6 @@ interface PublishedDocument {
 
 interface Props {
     publishedDocuments: PublishedDocument[];
-    auth: {
-        user: any;
-    };
 }
 
 const getStatusColor = (status: string) => {
@@ -70,7 +62,7 @@ const getStatusColor = (status: string) => {
     }
 };
 
-const PublishedDocuments = ({ publishedDocuments, auth }: Props) => {
+const PublishedDocuments = ({ publishedDocuments }: Props) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedDocument, setSelectedDocument] = useState<PublishedDocument | null>(null);
     const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);

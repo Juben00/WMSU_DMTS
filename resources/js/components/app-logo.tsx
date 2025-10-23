@@ -4,7 +4,7 @@ export default function AppLogo() {
     return (
         <>
             <div className="flex size-12 items-center justify-center rounded-md ">
-                <WmsuLogo className="size-12" />
+                <WmsuLogo className="size-15" />
             </div>
             <div className="ml-1 grid flex-1 text-left text-sm">
                 <span className="mb-0.5 leading-tight font-semibold text-center"><span className='tracking-widest'>WMSU</span>

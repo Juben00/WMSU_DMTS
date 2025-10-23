@@ -1,5 +1,5 @@
 import Navbar from '@/components/User/navbar'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { router } from '@inertiajs/react'
 import {
     FileText,
@@ -9,10 +9,8 @@ import {
     FileSignature,
     Clock,
     Globe,
-    BarChart3,
     TrendingUp,
     Activity,
-    Users,
 } from 'lucide-react';
 import TabHeader from '@/components/User/tab-header';
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Navbar from '@/components/User/navbar';
 import { Link, useForm } from '@inertiajs/react';
 import ApproveModal from './components/ApproveModal';

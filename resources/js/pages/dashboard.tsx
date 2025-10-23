@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -19,7 +19,6 @@ import {
     Shield,
     User,
     Activity,
-    Calendar
 } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -74,14 +73,12 @@ interface DashboardProps {
         user_count: number;
         document_count: number;
     }>;
-    statusDistribution: Record<string, number>;
     recentUsers: Array<{
         id: number;
         name: string;
         email: string;
         role: string;
         department: string;
-        is_active: boolean;
         created_at: string;
     }>;
 }
@@ -91,7 +88,6 @@ export default function Dashboard({
     recentActivities,
     monthlyTrends,
     topDepartments,
-    statusDistribution,
     recentUsers
 }: DashboardProps) {
     const getStatusColor = (status: string) => {
