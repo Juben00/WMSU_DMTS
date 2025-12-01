@@ -17,6 +17,7 @@ class AnalyticsTest extends TestCase
 
     public function test_superadmin_can_access_analytics_page()
     {
+        /** @var User $superadmin */
         $superadmin = User::factory()->create([
             'role' => 'superadmin',
         ]);
@@ -29,6 +30,7 @@ class AnalyticsTest extends TestCase
 
     public function test_regular_user_cannot_access_analytics_page()
     {
+        /** @var User $user */
         $user = User::factory()->create([
             'role' => 'user',
         ]);
@@ -41,6 +43,7 @@ class AnalyticsTest extends TestCase
 
     public function test_analytics_page_returns_correct_data_structure()
     {
+        /** @var User $superadmin */
         $superadmin = User::factory()->create([
             'role' => 'superadmin',
         ]);
@@ -71,6 +74,7 @@ class AnalyticsTest extends TestCase
 
     public function test_analytics_with_date_filters()
     {
+        /** @var User $superadmin */
         $superadmin = User::factory()->create([
             'role' => 'superadmin',
         ]);
@@ -90,6 +94,7 @@ class AnalyticsTest extends TestCase
 
     public function test_generate_report_endpoint()
     {
+        /** @var User $superadmin */
         $superadmin = User::factory()->create([
             'role' => 'superadmin',
         ]);
@@ -111,6 +116,7 @@ class AnalyticsTest extends TestCase
 
     public function test_generate_report_validation()
     {
+        /** @var User $superadmin */
         $superadmin = User::factory()->create([
             'role' => 'superadmin',
         ]);

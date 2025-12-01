@@ -15,6 +15,7 @@ class DepartmentDeletionTest extends TestCase
     public function test_superadmin_can_delete_department_without_users()
     {
         // Create a superadmin user
+        /** @var User $superadmin */
         $superadmin = User::factory()->create([
             'role' => 'superadmin',
             'department_id' => null
@@ -34,6 +35,7 @@ class DepartmentDeletionTest extends TestCase
     public function test_superadmin_cannot_delete_department_with_users()
     {
         // Create a superadmin user
+        /** @var User $superadmin */
         $superadmin = User::factory()->create([
             'role' => 'superadmin',
             'department_id' => null
@@ -58,6 +60,7 @@ class DepartmentDeletionTest extends TestCase
     public function test_non_superadmin_cannot_delete_department()
     {
         // Create a regular user
+        /** @var User $user */
         $user = User::factory()->create([
             'role' => 'user'
         ]);
