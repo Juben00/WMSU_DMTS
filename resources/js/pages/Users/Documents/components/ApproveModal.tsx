@@ -21,7 +21,7 @@ interface FormData {
     comments: string;
     attachment_files: File[];
     forward_to_id: number | null;
-    [key: string]: any;
+    [key: string]: string | number | null | File[];
 }
 
 interface FileWithPreview {
@@ -36,7 +36,7 @@ interface PageProps {
             role: string;
         };
     };
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, documentId }) => {
@@ -165,7 +165,7 @@ const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, documentId
             });
             setFiles([]);
         }
-    }, [isOpen, reset]);
+    }, [isOpen, reset, files]);
 
     // Cleanup preview URLs when component unmounts
     useEffect(() => {
@@ -176,7 +176,7 @@ const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, documentId
                 }
             });
         };
-    }, []);
+    }, [files]);
 
     return (
         <Dialog

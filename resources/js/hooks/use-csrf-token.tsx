@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
 import { SharedData } from '@/types';
+import { AxiosInstance } from 'axios';
 
 export function useCsrfToken() {
     const { props } = usePage<SharedData>();
@@ -24,8 +25,8 @@ export function useCsrfToken() {
             (window as unknown as { csrfToken: string }).csrfToken = csrfToken;
 
             // Update axios default header if axios is available
-            if ((window as unknown as { axios: any }).axios) {
-                (window as unknown as { axios: any }).axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+            if ((window as unknown as { axios: AxiosInstance | undefined }).axios) {
+                (window as unknown as { axios: AxiosInstance }).axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
             }
 
         }

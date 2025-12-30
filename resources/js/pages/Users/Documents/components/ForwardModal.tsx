@@ -42,7 +42,8 @@ interface FormData {
     forward_to_id: string;
     comments: string;
     files: File[];
-    [key: string]: any;
+    forward_type?: string;
+    [key: string]: string | number | null | File[] | undefined;
 }
 
 interface FileWithPreview {
@@ -199,7 +200,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
             // Pre-select the next through user if available
             setSelectedUser(nextThroughUser.user.id.toString());
         }
-    }, [isOpen, reset, nextThroughUser]);
+    }, [isOpen, reset, nextThroughUser, files]);
 
     // Cleanup preview URLs when component unmounts
     useEffect(() => {
@@ -210,7 +211,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
                 }
             });
         };
-    }, []);
+    }, [files]);
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>

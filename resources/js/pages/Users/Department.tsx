@@ -26,6 +26,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { User as UserType } from '@/types'
+import { toast } from 'sonner'
 
 interface FormData {
     [key: string]: string | null;
@@ -71,9 +72,10 @@ const Offices = ({ auth, users }: Props) => {
             onSuccess: () => {
                 setIsCreateDialogOpen(false);
                 reset();
+                toast.success('User created successfully');
             },
-            onError: (errors) => {
-                console.error(errors);
+            onError: (errors: { [key: string]: string }) => {
+                toast.error(Object.values(errors).join('\n') || 'Failed to create user. Please try again.');
             }
         });
     };
@@ -104,9 +106,10 @@ const Offices = ({ auth, users }: Props) => {
                 setIsEditDialogOpen(false);
                 setSelectedUser(null);
                 reset();
+                toast.success('User updated successfully');
             },
-            onError: (errors) => {
-                console.error(errors);
+            onError: (errors: { [key: string]: string }) => {
+                toast.error(Object.values(errors).join('\n') || 'Failed to update user. Please try again.');
             }
         });
     };
@@ -130,8 +133,8 @@ const Offices = ({ auth, users }: Props) => {
                             timer: 1500
                         });
                     },
-                    onError: (errors) => {
-                        console.error(errors);
+                    onError: (errors: { [key: string]: string }) => {
+                        toast.error(Object.values(errors).join('\n') || 'Failed to delete user. Please try again.');
                     }
                 });
             }

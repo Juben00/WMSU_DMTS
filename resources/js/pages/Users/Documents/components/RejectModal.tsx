@@ -166,7 +166,7 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, documentId }
             });
             setFiles([]);
         }
-    }, [isOpen, reset]);
+    }, [isOpen, reset, files]);
 
     // Cleanup preview URLs when component unmounts
     useEffect(() => {
@@ -177,7 +177,7 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, documentId }
                 }
             });
         };
-    }, []);
+    }, [files]);
 
     return (
         <Dialog

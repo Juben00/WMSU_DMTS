@@ -16,8 +16,12 @@ interface Props {
     setIsCreateDialogOpen: (isOpen: boolean) => void;
     departments: Department[];
     processing: boolean;
-    post: (url: string, options: any) => void;
-    setData: (key: string, value: any) => void;
+    post: (url: string, options: {
+        onSuccess: () => void;
+        onError: (errors: { [key: string]: string }) => void;
+        forceFormData: boolean;
+    }) => void;
+    setData: (key: string, value: string) => void;
     data: {
         first_name: string;
         last_name: string;
@@ -54,9 +58,8 @@ const AddNewUser = ({ setIsCreateDialogOpen, departments, processing, post, setD
                 toast.success('User created successfully');
             },
             forceFormData: true,
-            onError: (errors: any) => {
-                const errorMessages = Object.values(errors).join('\n');
-                toast.error(errorMessages);
+            onError: (errors: { [key: string]: string }) => {
+                toast.error(Object.values(errors).join('\n') || 'An error occurred while creating the user');
             }
         });
     };

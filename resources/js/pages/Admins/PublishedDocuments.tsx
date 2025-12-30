@@ -80,8 +80,8 @@ export default function PublishedDocuments({ publishedDocuments }: Props) {
                     onSuccess: () => {
                         toast.success('Document unpublished successfully');
                     },
-                    onError: (errors) => {
-                        toast.error('Failed to unpublish document. Please try again.');
+                    onError: (errors: { [key: string]: string }) => {
+                        toast.error(Object.values(errors).join('\n') || 'Failed to unpublish document. Please try again.');
                     }
                 });
             }

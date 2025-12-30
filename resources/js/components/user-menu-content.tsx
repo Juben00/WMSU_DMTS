@@ -5,6 +5,7 @@ import { type User } from '@/types';
 import { Link, router } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import { LogOut, Settings } from 'lucide-react';
+import { AxiosInstance } from 'axios';
 
 interface UserMenuContentProps {
     user: User;
@@ -17,11 +18,11 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
         cleanup();
 
         // Clear any stored CSRF tokens
-        delete (window as any).csrfToken;
+        delete (window as unknown as { csrfToken: string | undefined }).csrfToken;
 
         // Clear axios headers
-        if ((window as any).axios) {
-            delete (window as any).axios.defaults.headers.common['X-CSRF-TOKEN'];
+        if ((window as unknown as { axios: AxiosInstance | undefined }).axios) {
+            delete (window as unknown as { axios: AxiosInstance }).axios.defaults.headers.common['X-CSRF-TOKEN'];
         }
 
         // Clear CSRF meta tag

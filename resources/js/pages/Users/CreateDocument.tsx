@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Navbar from '@/components/User/navbar';
 import { useForm, router } from '@inertiajs/react';
 import axios from '@/lib/axios';
@@ -108,7 +108,7 @@ const CreateDocument = ({ auth, departments }: Props) => {
 
 
     // Function to generate auto order number with robust CSRF handling
-    const generateOrderNumber = async (retryCount = 0) => {
+    const generateOrderNumber = useCallback(async (retryCount = 0) => {
         if (isGeneratingRef.current) {
             console.warn("Order number generation already in progress");
             return;
@@ -194,7 +194,7 @@ const CreateDocument = ({ auth, departments }: Props) => {
             isGeneratingRef.current = false;
             setIsGeneratingOrderNumber(false);
         }
-    };
+    }, [csrfToken, setData]);
 
     // Auto-generate order number when auto-generate is enabled
     useEffect(() => {
@@ -216,29 +216,7 @@ const CreateDocument = ({ auth, departments }: Props) => {
                 clearTimeout(generateOrderNumberTimeoutRef.current);
             }
         };
-    }, [data.auto_generate_order_number, csrfToken]);
-
-    // Handle auto-generation toggle changes
-    useEffect(() => {
-        if (data.auto_generate_order_number && csrfToken) {
-            // Clear existing timeout
-            if (generateOrderNumberTimeoutRef.current) {
-                clearTimeout(generateOrderNumberTimeoutRef.current);
-            }
-
-            // Set new timeout
-            generateOrderNumberTimeoutRef.current = setTimeout(() => {
-                generateOrderNumber();
-            }, 500);
-        }
-
-        // Cleanup timeout on unmount or dependency change
-        return () => {
-            if (generateOrderNumberTimeoutRef.current) {
-                clearTimeout(generateOrderNumberTimeoutRef.current);
-            }
-        };
-    }, [data.auto_generate_order_number, csrfToken]);
+    }, [data.auto_generate_order_number, csrfToken, generateOrderNumber]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

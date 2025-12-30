@@ -65,13 +65,8 @@ export default function Departments({ departments, filters }: Props) {
                     onSuccess: () => {
                         toast.success('Department deleted successfully');
                     },
-                    onError: (errors: any) => {
-                        console.error('Delete error:', errors);
-                        if (errors.department) {
-                            toast.error(errors.department);
-                        } else {
-                            toast.error('Failed to delete department. Please try again.');
-                        }
+                    onError: (errors: { [key: string]: string }) => {
+                        toast.error(Object.values(errors).join('\n') || 'Failed to delete department. Please try again.');
                     }
                 });
             }

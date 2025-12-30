@@ -98,7 +98,7 @@ const Documents = ({ documents = [], receivedDocuments = [], auth, document_data
     const [showBarcodeModal, setShowBarcodeModal] = useState(false)
     const [documentDataShown, setDocumentDataShown] = useState(false)
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, reset } = useForm({
         barcode_value: ''
     })
 
@@ -281,7 +281,10 @@ const Documents = ({ documents = [], receivedDocuments = [], auth, document_data
                     map.set(doc.id, doc);
                 }
             } else {
-                if (!map.has(doc.id) || (doc as any).sequence > (map.get(doc.id) as any).sequence) {
+                const currentDoc = map.get(doc.id);
+                const docSequence = 'sequence' in doc ? (doc as { sequence?: number }).sequence : undefined;
+                const currentSequence = currentDoc && 'sequence' in currentDoc ? (currentDoc as { sequence?: number }).sequence : undefined;
+                if (!map.has(doc.id) || (docSequence !== undefined && currentSequence !== undefined && docSequence > currentSequence)) {
                     map.set(doc.id, doc);
                 }
             }
@@ -296,9 +299,10 @@ const Documents = ({ documents = [], receivedDocuments = [], auth, document_data
         if (doc.document_type !== "for_info") return false;
         const departmentId = (auth.user as User).department?.id;
         // If recipients are present, check them
-        if ((doc as any).recipients) {
-            return (doc as any).recipients.some(
-                (rec: any) => rec.department_id === departmentId && rec.status === "received"
+        const docWithRecipients = doc as Document & { recipients?: Array<{ department_id?: number; status?: string }> };
+        if (docWithRecipients.recipients) {
+            return docWithRecipients.recipients.some(
+                (rec) => rec.department_id === departmentId && rec.status === "received"
             );
         }
         // fallback: check doc.department_id and recipient_status
@@ -329,7 +333,7 @@ const Documents = ({ documents = [], receivedDocuments = [], auth, document_data
                 owner_id: doc.owner_id,
                 current_user_id: auth.user.id,
                 department_id: doc.department_id,
-                user_department_id: (auth.user as any).department_id
+                user_department_id: (auth.user as User).department?.id
             });
 
             return shouldInclude;
@@ -344,7 +348,10 @@ const Documents = ({ documents = [], receivedDocuments = [], auth, document_data
         && doc.recipient_status !== "returned"
     );
 
-    const published = allDocuments.filter((doc) => doc.owner_id === auth.user.id && (doc as any).is_public)
+    const published = allDocuments.filter((doc) => {
+        const docWithPublic = doc as Document & { is_public?: boolean };
+        return doc.owner_id === auth.user.id && docWithPublic.is_public;
+    })
 
     // Archived documents are those not in the current fiscal year
     const archived = allDocuments.filter((doc) => !isInCurrentFiscalYear(doc.created_at))

@@ -94,16 +94,6 @@ interface Document {
     signatory?: string;
 }
 
-interface Department {
-    id: number;
-    name: string;
-    contact_person: {
-        id: number;
-        name: string;
-        role: string;
-    } | null;
-}
-
 interface Props {
     document: Document;
     auth: {
@@ -253,10 +243,10 @@ const ViewDocument = ({ document, auth, users, otherDepartments, throughUsers, a
     const [isForwardOtherOfficeModalOpen, setIsForwardOtherOfficeModalOpen] = useState(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
     const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
-    const [copied, setCopied] = useState(false);
+    const [, setCopied] = useState(false);
     const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
 
-    const { post, delete: destroy, processing, setData } = useForm({
+    const { post, delete: destroy, processing } = useForm({
         status: '',
         comments: '',
         revision_file: null as File | null,
@@ -273,7 +263,6 @@ const ViewDocument = ({ document, auth, users, otherDepartments, throughUsers, a
     // Helper functions to determine user permissions and document states
     const isOwner = () => document.owner_id === auth.user.id;
     const isFinalRecipient = () => document.final_recipient?.id === auth.user.department_id && auth.user.role === 'admin';
-    const isAdmin = () => auth.user.role === 'admin';
     const isForInfoDocument = () => document.document_type === 'for_info';
     const isNonForInfoDocument = () => document.document_type !== 'for_info';
     const canRespond = () => document.can_respond;
@@ -286,13 +275,6 @@ const ViewDocument = ({ document, auth, users, otherDepartments, throughUsers, a
 
 
     // Action permission checks
-    const canMarkAsReceived = () => {
-        if (isForInfoDocument()) {
-            return canRespond();
-        }
-        return canRespond() && isNonForInfoDocument() && isNotFinalRecipient() && !isReturned() && isPending();
-    };
-
     const canApproveOrReject = () => {
         return canRespond() && isNonForInfoDocument() && isFinalRecipient() && !isReturned() && notApprovedAndRejected() && !senderIsPresident();
     };
@@ -973,7 +955,7 @@ const ViewDocument = ({ document, auth, users, otherDepartments, throughUsers, a
                                     <div className="relative ml-4 flex-1">
                                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-full" style={{ zIndex: 0 }}></div>
                                         <div className="space-y-8">
-                                            {approvalChain.map((recipient: DocumentRecipient, idx: number) => {
+                                            {approvalChain.map((recipient: DocumentRecipient) => {
                                                 // Find all response files uploaded by this recipient
                                                 const recipientResponseFiles = responseFiles.filter(
                                                     (file: DocumentFile) => file.document_recipient_id === recipient.id

@@ -177,7 +177,7 @@ const ForwardOtherOfficeModal: React.FC<ForwardModalProps> = ({
             });
             setFiles([]);
         }
-    }, [isOpen, reset]);
+    }, [isOpen, reset, files]);
 
     // Cleanup preview URLs when component unmounts
     useEffect(() => {
@@ -188,7 +188,7 @@ const ForwardOtherOfficeModal: React.FC<ForwardModalProps> = ({
                 }
             });
         };
-    }, []);
+    }, [files]);
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>

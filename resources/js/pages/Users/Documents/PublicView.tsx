@@ -179,7 +179,7 @@ const getDocumentTypeDisplayName = (documentType: string) => {
 };
 
 const PublicView: React.FC<Props> = ({ document }) => {
-    const [copied, setCopied] = useState(false);
+    const [, setCopied] = useState(false);
     const originalFiles = document.files.filter(file => file.upload_type === 'original');
     const responseFiles = document.files.filter(file => file.upload_type === 'response');
 
