@@ -263,11 +263,9 @@ const ViewDocument = ({ document, auth, users, otherDepartments, throughUsers, a
     // Helper functions to determine user permissions and document states
     const isOwner = () => document.owner_id === auth.user.id;
     const isFinalRecipient = () => document.final_recipient?.id === auth.user.department_id && auth.user.role === 'admin';
-    const isForInfoDocument = () => document.document_type === 'for_info';
     const isNonForInfoDocument = () => document.document_type !== 'for_info';
     const canRespond = () => document.can_respond;
     const isNotOwner = () => !isOwner();
-    const isNotFinalRecipient = () => !isFinalRecipient();
     const isReturned = () => document.status === 'returned';
     const isPending = () => document.status === 'pending';
     const notApprovedAndRejected = () => !['approved', 'rejected'].includes(document.status);
