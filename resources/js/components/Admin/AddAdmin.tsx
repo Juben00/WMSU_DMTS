@@ -1,23 +1,7 @@
-import { Head, Link, router } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { BreadcrumbItem } from '@/types';
 import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { Plus, Trash2, Lock, Unlock, Eye } from 'lucide-react';
-import { format } from 'date-fns';
 import { toast } from 'sonner';
 import InputError from '../input-error';
 
@@ -32,10 +16,34 @@ interface Props {
     setIsCreateDialogOpen: (isOpen: boolean) => void;
     departments: Department[];
     processing: boolean;
-    post: (url: string, options: any) => void;
-    setData: (key: string, value: any) => void;
-    data: any;
-    errors: any;
+    post: (url: string, options: {
+        onSuccess: () => void;
+        onError: (errors: { [key: string]: string }) => void;
+        forceFormData: boolean;
+    }) => void;
+    setData: (key: string, value: string) => void;
+    data: {
+        first_name: string;
+        last_name: string;
+        middle_name: string;
+        suffix: string;
+        gender: string;
+        department_id: string;
+        position: string;
+        email: string;
+        [key: string]: string;
+    };
+    errors: {
+        first_name: string;
+        last_name: string;
+        middle_name: string;
+        suffix: string;
+        gender: string;
+        department_id: string;
+        position: string;
+        email: string;
+        [key: string]: string;
+    };
     reset: () => void;
 }
 
@@ -50,7 +58,7 @@ const AddNewAdmin = ({ setIsCreateDialogOpen, departments, processing, post, set
                 toast.success('Admin created successfully');
             },
             forceFormData: true,
-            onError: (errors: any) => {
+            onError: (errors: { [key: string]: string }) => {
                 const errorMessages = Object.values(errors).join('\n');
                 toast.error(errorMessages);
             }
