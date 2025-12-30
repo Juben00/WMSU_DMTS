@@ -16,10 +16,33 @@ interface EditAdminProps {
     }[];
     setIsEditDialogOpen: (value: boolean) => void;
     processing: boolean;
-    put: (url: string, options: any) => void;
-    setData: (key: string, value: any) => void;
-    data: any;
-    errors: any;
+    put: (url: string, options: {
+        onSuccess: () => void;
+        onError: (errors: { [key: string]: string }) => void;
+    }) => void;
+    setData: (key: string, value: string) => void;
+    data: {
+        first_name: string;
+        last_name: string;
+        middle_name: string;
+        suffix: string;
+        gender: string;
+        department_id: string;
+        position: string;
+        email: string;
+        [key: string]: string;
+    };
+    errors: {
+        first_name: string;
+        last_name: string;
+        middle_name: string;
+        suffix: string;
+        gender: string;
+        department_id: string;
+        position: string;
+        email: string;
+        [key: string]: string;
+    };
     reset: () => void;
 }
 
@@ -45,8 +68,9 @@ export default function EditAdmin({ admin, departments, setIsEditDialogOpen, pro
                 setIsEditDialogOpen(false);
                 reset();
             },
-            onError: (errors: any) => {
-                toast.error('Failed to update admin. Please try again.');
+            onError: (errors: { [key: string]: string }) => {
+                const errorMessages = Object.values(errors).join('\n');
+                toast.error(errorMessages);
             }
         });
     };

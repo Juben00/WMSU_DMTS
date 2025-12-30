@@ -27,7 +27,7 @@ interface FormData {
     forward_to_id: string;
     comments: string;
     files: File[];
-    [key: string]: any;
+    [key: string]: string | number | null | File[];
 }
 
 interface FileWithPreview {
@@ -48,7 +48,7 @@ const ForwardOtherOfficeModal: React.FC<ForwardModalProps> = ({
     const [files, setFiles] = useState<FileWithPreview[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { post, processing: isProcessing, setData, reset } = useForm<FormData>({
+    const { post, setData, reset } = useForm<FormData>({
         forward_type: 'department',
         forward_to_id: '',
         comments: '',
@@ -151,12 +151,12 @@ const ForwardOtherOfficeModal: React.FC<ForwardModalProps> = ({
                     router.visit(route('users.documents')); // refresh the page
                 });
             },
-            onError: (errors: any) => {
+            onError: (errors: { [key: string]: string }) => {
                 setIsSubmitting(false);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'An error occurred while forwarding the document'
+                    text: Object.values(errors).join('\n') || 'An error occurred while forwarding the document',
                 });
             }
         });

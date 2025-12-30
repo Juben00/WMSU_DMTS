@@ -11,7 +11,6 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import Swal from 'sweetalert2';
-import { Download } from 'lucide-react';
 
 interface DocumentFile {
     id: number;
@@ -49,7 +48,7 @@ const formatFileSize = (bytes: number) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
 
-const FileCard = ({ file, documentId, color = 'red', onDelete }: { file: any, documentId: number, color?: 'red' | 'blue', onDelete: (fileId: number) => void }) => (
+const FileCard = ({ file, color = 'red', onDelete }: { file: DocumentFile, color?: 'red' | 'blue', onDelete: (fileId: number) => void }) => (
     <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-5 flex flex-col items-center border ${color === 'red' ? 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500' : 'border-red-200 dark:border-red-800 hover:border-red-300 dark:hover:border-red-700'}`}>
         <div className={`w-full h-32 flex items-center justify-center ${color === 'red' ? 'bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600' : 'bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20'} rounded-lg mb-4 overflow-hidden`}>
             <a
@@ -96,12 +95,11 @@ const FileCard = ({ file, documentId, color = 'red', onDelete }: { file: any, do
 );
 
 const EditDocument = ({ document, involvedDepartments }: Props) => {
-    const [filePreviews, setFilePreviews] = useState<string[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [existingFiles, setExistingFiles] = useState<DocumentFile[]>(document.files || []);
     const [newFiles, setNewFiles] = useState<File[]>([]);
     const [newFilePreviews, setNewFilePreviews] = useState<string[]>([]);
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, processing, errors } = useForm({
         order_number: document.order_number || '',
         subject: document.subject || '',
         description: document.description || '',
@@ -281,7 +279,7 @@ const EditDocument = ({ document, involvedDepartments }: Props) => {
                                         <h3 className="text-sm font-semibold text-red-700 dark:text-red-400 mb-2">Original Files</h3>
                                         <div className="flex flex-wrap gap-4">
                                             {existingFiles.map(file => (
-                                                <FileCard key={file.id} file={file} documentId={document.id} color="red" onDelete={handleDeleteFile} />
+                                                <FileCard key={file.id} file={file} color="red" onDelete={handleDeleteFile} />
                                             ))}
                                         </div>
                                     </div>

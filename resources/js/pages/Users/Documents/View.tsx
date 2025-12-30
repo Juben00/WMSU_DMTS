@@ -16,6 +16,7 @@ interface DocumentFile {
     file_size: number;
     upload_type: string;
     uploaded_by: number;
+    document_recipient_id?: number;
     file_path?: string;
 }
 
@@ -169,11 +170,11 @@ const formatFileSize = (bytes: number) => {
 };
 
 // FileCard component for previewing and downloading files
-const FileCard = ({ file, documentId, color = 'red' }: { file: any, documentId: number, color?: 'red' | 'blue' }) => (
+const FileCard = ({ file, documentId, color = 'red' }: { file: DocumentFile, documentId: number, color?: 'red' | 'blue' }) => (
     <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-5 flex flex-col items-center border ${color === 'red' ? 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500' : 'border-blue-200 dark:border-blue-600 hover:border-blue-300 dark:hover:border-blue-500'}`}>
         <div className={`w-full h-48 flex items-center justify-center ${color === 'red' ? 'bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600' : 'bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20'} rounded-lg mb-4 overflow-hidden`}>
             <a
-                href={file.file_path ? `/storage/${file.file_path}` : '#'}
+                href={file.file_path ? route('documents.download', { document: documentId, file: file.id }) : '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full h-full flex items-center justify-center"
@@ -181,13 +182,13 @@ const FileCard = ({ file, documentId, color = 'red' }: { file: any, documentId: 
             >
                 {file.original_filename.match(/\.(jpg|jpeg|png|gif)$/i) ? (
                     <img
-                        src={file.file_path ? `/storage/${file.file_path}` : '#'}
+                        src={file.file_path ? route('documents.download', { document: documentId, file: file.id }) : '#'}
                         alt={file.original_filename}
                         className="object-contain w-full h-full"
                     />
                 ) : file.original_filename.match(/\.(pdf)$/i) ? (
                     <embed
-                        src={file.file_path ? `/storage/${file.file_path}` : '#'}
+                        src={file.file_path ? route('documents.download', { document: documentId, file: file.id }) : '#'}
                         type="application/pdf"
                         className="w-full h-full"
                     />
@@ -711,45 +712,7 @@ const ViewDocument = ({ document, auth, users, otherDepartments, throughUsers, a
                                                 Actions
                                             </h3>
                                             <div className="flex flex-wrap gap-3 justify-center">
-                                                {/* {canMarkAsReceived() && (
-                                                    <button
-                                                        onClick={async () => {
-                                                            const result = await Swal.fire({
-                                                                title: 'Are you sure?',
-                                                                text: 'Do you want to mark this document as received?',
-                                                                icon: 'question',
-                                                                showCancelButton: true,
-                                                                confirmButtonColor: '#16a34a',
-                                                                cancelButtonColor: '#d1d5db',
-                                                                confirmButtonText: 'Yes',
-                                                                cancelButtonText: 'No'
-                                                            });
-                                                            if (result.isConfirmed) {
-                                                                post(route('documents.received', { document: document.id }), {
-                                                                    onSuccess: () => {
-                                                                        Swal.fire({
-                                                                            icon: 'success',
-                                                                            title: 'Received!',
-                                                                            text: 'The document has been marked as received.',
-                                                                            timer: 1500,
-                                                                            showConfirmButton: false
-                                                                        }).then(() => window.location.reload());
-                                                                    },
-                                                                    onError: (errors: any) => {
-                                                                        Swal.fire({
-                                                                            icon: 'error',
-                                                                            title: 'Error',
-                                                                            text: errors?.message || 'An error occurred.'
-                                                                        });
-                                                                    }
-                                                                });
-                                                            }
-                                                        }}
-                                                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold shadow transition"
-                                                    >
-                                                        Receive
-                                                    </button>
-                                                )} */}
+
                                                 {canApproveOrReject() && (
                                                     <>
                                                         <button
@@ -900,11 +863,11 @@ const ViewDocument = ({ document, auth, users, otherDepartments, throughUsers, a
                                                                             showConfirmButton: false
                                                                         }).then(() => window.location.href = route('users.documents'));
                                                                     },
-                                                                    onError: (errors: any) => {
+                                                                    onError: (errors: { [key: string]: string }) => {
                                                                         Swal.fire({
                                                                             icon: 'error',
                                                                             title: 'Error',
-                                                                            text: errors?.message || 'An error occurred.'
+                                                                            text: Object.values(errors).join('\n') || 'An error occurred.'
                                                                         });
                                                                     }
                                                                 });
@@ -1013,7 +976,7 @@ const ViewDocument = ({ document, auth, users, otherDepartments, throughUsers, a
                                             {approvalChain.map((recipient: DocumentRecipient, idx: number) => {
                                                 // Find all response files uploaded by this recipient
                                                 const recipientResponseFiles = responseFiles.filter(
-                                                    (file: any) => file.document_recipient_id === recipient.id
+                                                    (file: DocumentFile) => file.document_recipient_id === recipient.id
                                                 );
 
                                                 const recipientName = recipient.user ? `${recipient.user.first_name} ${recipient.user.last_name}` : recipient.department?.name;
@@ -1084,7 +1047,7 @@ const ViewDocument = ({ document, auth, users, otherDepartments, throughUsers, a
                                                             {/* Show all response files for this recipient, with preview and response type */}
                                                             {recipientResponseFiles.length > 0 && (
                                                                 <div className="mt-4 space-y-3">
-                                                                    {recipientResponseFiles.map((file: any) => {
+                                                                    {recipientResponseFiles.map((file: DocumentFile) => {
                                                                         const isImage = file.original_filename.match(/\.(jpg|jpeg|png|gif)$/i);
                                                                         return (
                                                                             <div key={file.id} className="flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg border border-blue-200 dark:border-blue-600">

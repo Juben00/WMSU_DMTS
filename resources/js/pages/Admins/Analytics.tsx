@@ -205,7 +205,7 @@ export default function Analytics({
                                         fill="#8884d8"
                                         dataKey="count"
                                     >
-                                        {userAnalytics.activityByRole.map((entry, index) => (
+                                        {userAnalytics.activityByRole.map((_entry: { role: string; count: number }, index: number) => (
                                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                         ))}
                                     </Pie>
@@ -322,7 +322,7 @@ export default function Analytics({
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {processingTimeAnalytics.avgProcessingTime.map((item, index) => (
+                                        {processingTimeAnalytics.avgProcessingTime.map((item: { status: string; avg_hours: number }, index: number) => (
                                             <TableRow key={index}>
                                                 <TableCell>
                                                     <Badge className={getStatusColor(item.status)}>
@@ -349,7 +349,7 @@ export default function Analytics({
                                             fill="#8884d8"
                                             dataKey="count"
                                         >
-                                            {processingTimeAnalytics.processingTimeDistribution.map((entry, index) => (
+                                            {processingTimeAnalytics.processingTimeDistribution.map((_entry: { time_range: string; count: number }, index: number) => (
                                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                             ))}
                                         </Pie>
@@ -381,16 +381,16 @@ export default function Analytics({
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {userAnalytics.topActiveUsers.map((user, index) => (
-                                    <TableRow key={user.user_id}>
+                                {userAnalytics.topActiveUsers.map((user: { user_id: number; name: string; email: string; department: string; role: string; activity_count: number }, index: number) => (
+                                    <TableRow key={user.user_id} data-index={index}>
                                         <TableCell className="font-medium">{user.name}</TableCell>
                                         <TableCell>{user.email}</TableCell>
                                         <TableCell>{user.department}</TableCell>
                                         <TableCell>
-                                            <Badge variant="secondary">{user.role}</Badge>
+                                            <Badge className={getStatusColor(user.role)}>{user.role}</Badge>
                                         </TableCell>
                                         <TableCell>
-                                            <Badge variant="outline">{user.activity_count}</Badge>
+                                            <Badge className={getStatusColor(user.activity_count.toString())}>{user.activity_count}</Badge>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -441,7 +441,7 @@ export default function Analytics({
                                         fill="#8884d8"
                                         dataKey="count"
                                     >
-                                        {activityAnalytics.types.map((entry, index) => (
+                                        {activityAnalytics.types.map((_entry: { action: string; count: number }, index: number) => (
                                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                         ))}
                                     </Pie>

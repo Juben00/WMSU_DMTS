@@ -9,11 +9,27 @@ import { Switch } from '@/components/ui/switch';
 
 interface Props {
     processing: boolean;
-    post: (url: string, options: any) => void;
+    post: (url: string, options: {
+        onSuccess: () => void;
+        onError: (errors: { [key: string]: string }) => void;
+    }) => void;
     setIsCreateDialogOpen: (value: boolean) => void;
-    setData: (key: string, value: any) => void;
-    data: any;
-    errors: any;
+    setData: (key: string, value: string) => void;
+    data: {
+        name: string;
+        code: string;
+        is_presidential: string;
+        description: string;
+        type: string;
+    };
+    errors: {
+        name: string;
+        code: string;
+        is_presidential: string;
+        description: string;
+        type: string;
+        [key: string]: string;
+    };
     reset: () => void;
 }
 
@@ -27,8 +43,9 @@ export default function AddDepartment({ setIsCreateDialogOpen, processing, post,
                 setIsCreateDialogOpen(false);
                 reset();
             },
-            onError: (errors: any) => {
-                toast.error('Failed to create department. Please try again.');
+            onError: (errors: { [key: string]: string }) => {
+                const errorMessages = Object.values(errors).join('\n');
+                toast.error(errorMessages);
             },
         });
     };
@@ -65,7 +82,7 @@ export default function AddDepartment({ setIsCreateDialogOpen, processing, post,
                     <div className="">
                         <Label htmlFor="is_presidential" className="dark:text-gray-200">Presidential</Label>
                         <div className="flex-1 flex justify-center gap-2">
-                            <Switch id="is_presidential" checked={data.is_presidential} onCheckedChange={(checked) => setData('is_presidential', checked)} />
+                            <Switch id="is_presidential" checked={data.is_presidential === 'true'} onCheckedChange={(checked) => setData('is_presidential', checked ? 'true' : 'false')} />
                         </div>
                     </div>
                 </div>

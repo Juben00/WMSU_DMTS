@@ -3,8 +3,8 @@ import axios from 'axios';
 // Get CSRF token with multiple fallback methods
 const getCsrfToken = () => {
     // Method 1: Get from window object (updated by our hook)
-    if ((window as any).csrfToken) {
-        return (window as any).csrfToken;
+    if ((window as unknown as { csrfToken: string | undefined }).csrfToken) {
+        return (window as unknown as { csrfToken: string | undefined }).csrfToken;
     }
 
     // Method 2: Get from meta tag

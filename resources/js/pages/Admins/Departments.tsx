@@ -26,21 +26,28 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface Props {
     departments: Departments[];
+    filters: {
+        name: string;
+        code: string;
+        description: string;
+        type: string;
+        is_presidential: boolean;
+    };
 }
 
-export default function Departments({ departments }: Props) {
+export default function Departments({ departments, filters }: Props) {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [selectedOffice, setSelectedOffice] = useState<Departments | null>(null);
     const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
-    const [filter, setFilter] = useState('');
+    const [filter, setFilter] = useState(filters.name || '');
 
     const { processing, delete: destroy, data, setData, post, errors, reset, put } = useForm({
-        name: '',
-        code: '',
-        description: '',
-        type: '',
-        is_presidential: false as boolean,
+        name: filters.name || '',
+        code: filters.code || '',
+        description: filters.description || '',
+        type: filters.type || '',
+        is_presidential: filters.is_presidential ? 'true' : 'false',
     });
 
     const handleDeleteOffice = (department: Departments) => {
@@ -83,7 +90,7 @@ export default function Departments({ departments }: Props) {
         setData('code', department.code || '');
         setData('description', department.description || '');
         setData('type', department.type as 'office' | 'college'); // Assert type
-        setData('is_presidential', department.is_presidential || false);
+        setData('is_presidential', department.is_presidential ? 'true' : 'false');
         setIsEditDialogOpen(true);
     };
 
@@ -119,7 +126,7 @@ export default function Departments({ departments }: Props) {
                             <DialogHeader>
                                 <DialogTitle>Create New Department</DialogTitle>
                             </DialogHeader>
-                            <AddDepartment setIsCreateDialogOpen={setIsCreateDialogOpen} processing={processing} post={post} setData={setData} data={data} errors={errors} reset={reset} />
+                            <AddDepartment setIsCreateDialogOpen={setIsCreateDialogOpen} processing={processing} post={post} setData={setData} data={data as unknown as { name: string; code: string; description: string; type: string; is_presidential: string }} errors={errors as unknown as { name: string; code: string; description: string; type: string; is_presidential: string }} reset={reset as () => void} />
                         </DialogContent>
                     </Dialog>
                 </div>
@@ -138,12 +145,12 @@ export default function Departments({ departments }: Props) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {departments.filter((department) =>
+                            {departments.filter((department: Departments) =>
                                 department.name.toLowerCase().includes(filter.toLowerCase()) ||
                                 department.code.toLowerCase().includes(filter.toLowerCase()) ||
                                 department.description?.toLowerCase().includes(filter.toLowerCase()) ||
                                 department.type.toLowerCase().includes(filter.toLowerCase())
-                            ).map((department) => (
+                            ).map((department: Departments) => (
                                 <TableRow key={department.id}>
                                     <TableCell>{department.name}</TableCell>
                                     <TableCell>{department.code}</TableCell>
@@ -232,8 +239,8 @@ export default function Departments({ departments }: Props) {
                                 put={put}
                                 setData={setData}
                                 data={data}
-                                errors={errors}
-                                reset={reset}
+                                errors={errors as { name: string; code: string; description: string; type: string; is_presidential: string }}
+                                reset={reset as () => void}
                             />
                         )}
                     </DialogContent>

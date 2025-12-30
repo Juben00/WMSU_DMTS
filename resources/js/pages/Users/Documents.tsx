@@ -25,6 +25,7 @@ import TabHeader from "@/components/User/tab-header"
 import Spinner from "@/components/spinner"
 import ReceiveDocument from "@/components/User/receive-document"
 import BarcodeComponent from "@/components/barcode"
+import { User } from "@/types"
 
 // Utility function to detect if dark mode is currently active
 const isDarkMode = () => {
@@ -197,12 +198,12 @@ const Documents = ({ documents = [], receivedDocuments = [], auth, document_data
                     setActiveTab("received")
                 })
             },
-            onError: (errors: any) => {
-                console.log("Errors:", errors)
+            onError: (errors: { [key: string]: string }) => {
+                const errorMessages = Object.values(errors).join('\n');
                 Swal.fire({
                     icon: 'error',
                     title: 'Document Not Found',
-                    text: errors.barcode_value || 'Invalid barcode. Document not found.',
+                    text: errorMessages || 'Invalid barcode. Document not found.',
                     confirmButtonColor: '#b91c1c',
                     background: isDarkMode() ? '#1f2937' : '#ffffff',
                     color: isDarkMode() ? '#f9fafb' : '#111827',
@@ -241,7 +242,7 @@ const Documents = ({ documents = [], receivedDocuments = [], auth, document_data
     // Helper function to determine if the current user/department is the latest recipient (approval chain)
     const isDocumentReceivedByUser = (doc: Document) => {
         const userId = auth.user.id;
-        const departmentId = (auth.user as any).department_id;
+        const departmentId = (auth.user as User).department?.id;
         if (doc.document_type === "for_info") {
             // For for_info, anyone in the department can receive at any time if they are a recipient
             return (
@@ -260,7 +261,7 @@ const Documents = ({ documents = [], receivedDocuments = [], auth, document_data
     // Helper function to determine if a document was sent by the current user (owner), but is NOT currently with them
     const isDocumentSentByUser = (doc: Document) => {
         const userId = auth.user.id;
-        const departmentId = (auth.user as any).department_id;
+        const departmentId = (auth.user as User).department?.id;
         const isOwner = doc.owner_id === userId;
         const isWithUser = (doc.user_id && doc.user_id === userId) || (doc.department_id && doc.department_id === departmentId);
         return isOwner && !isWithUser && doc.status !== "draft";
@@ -293,7 +294,7 @@ const Documents = ({ documents = [], receivedDocuments = [], auth, document_data
     // Helper to check if a for_info document is received by the current user's department
     const isForInfoReceivedByDepartment = (doc: Document) => {
         if (doc.document_type !== "for_info") return false;
-        const departmentId = (auth.user as any).department_id;
+        const departmentId = (auth.user as User).department?.id;
         // If recipients are present, check them
         if ((doc as any).recipients) {
             return (doc as any).recipients.some(

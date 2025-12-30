@@ -64,7 +64,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
     const [files, setFiles] = useState<FileWithPreview[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { post, processing: isProcessing, setData, reset, data } = useForm<FormData>({
+    const { post, setData, reset } = useForm<FormData>({
         forward_type: 'user',
         forward_to_id: '',
         comments: '',
@@ -170,12 +170,12 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
                     router.visit(route('users.documents')); // refresh the page
                 });
             },
-            onError: (errors: any) => {
+            onError: (errors: { [key: string]: string }) => {
                 setIsSubmitting(false);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: errors.message
+                    text: Object.values(errors).join('\n') || 'An error occurred while forwarding the document',
                 });
             }
         });

@@ -90,7 +90,7 @@ const PublishedDocuments = ({ publishedDocuments }: Props) => {
                         toast.success('Document unpublished successfully');
                     },
                     onError: (errors) => {
-                        toast.error('Failed to unpublish document. Please try again.');
+                        toast.error('Failed to unpublish document. Please try again.' + errors.message);
                     }
                 });
             }

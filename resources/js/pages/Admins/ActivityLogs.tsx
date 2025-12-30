@@ -40,7 +40,7 @@ interface PaginatedLogs {
     last_page: number;
     per_page: number;
     total: number;
-    links: any[];
+    links: Record<string, string>[];
 }
 
 interface Props {
@@ -84,7 +84,7 @@ export default function ActivityLogs({ logs, filters, users }: Props) {
         setLocalFilters(newFilters);
 
         // Remove empty filters
-        const params: any = {};
+        const params: Record<string, string> = {};
         Object.entries(newFilters).forEach(([key, val]) => {
             if (val) params[key] = val;
         });
@@ -96,7 +96,7 @@ export default function ActivityLogs({ logs, filters, users }: Props) {
     };
 
     const handlePageChange = (page: number) => {
-        const params: any = { page };
+        const params: Record<string, string | number> = { page };
         Object.entries(localFilters).forEach(([key, val]) => {
             if (val) params[key] = val;
         });

@@ -18,6 +18,20 @@ interface AuthUser {
     email?: string;
 }
 
+interface Notification {
+    id: string;
+    type: string;
+    notifiable_type: string;
+    notifiable_id: number;
+    data: {
+        message: string;
+        document_name: string;
+    };
+    read_at: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
 interface NavItem {
     label: string;
     href: string;
@@ -29,7 +43,7 @@ interface PageProps extends InertiaPageProps {
     auth: {
         user?: AuthUser;
     };
-    notifications: any[];
+    notifications: Notification[];
 }
 
 const Navbar = () => {
@@ -54,7 +68,7 @@ const Navbar = () => {
         setLocalNotifications(notifications || []);
     }, [notifications]);
 
-    const unreadCount = localNotifications.filter((n: any) => !n.read_at).length;
+    const unreadCount = localNotifications.filter((n: Notification) => !n.read_at).length;
 
     const handleMarkAllAsRead = () => {
         if (isMarkingAsRead) return;
@@ -65,8 +79,8 @@ const Navbar = () => {
         router.post('/notifications/read-all', {}, {
             onSuccess: () => {
                 // Update local state to mark all notifications as read
-                setLocalNotifications((prev: any[]) =>
-                    prev.map((notif: any) => ({
+                setLocalNotifications((prev: Notification[]) =>
+                    prev.map((notif: Notification) => ({
                         ...notif,
                         read_at: notif.read_at || new Date().toISOString()
                     }))
@@ -90,8 +104,8 @@ const Navbar = () => {
         router.post(`/notifications/${notificationId}/read`, {}, {
             onSuccess: () => {
                 // Update local state to mark this notification as read
-                setLocalNotifications((prev: any[]) =>
-                    prev.map((notif: any) =>
+                setLocalNotifications((prev: Notification[]) =>
+                    prev.map((notif: Notification) =>
                         notif.id === notificationId
                             ? { ...notif, read_at: notif.read_at || new Date().toISOString() }
                             : notif
@@ -307,7 +321,7 @@ const Navbar = () => {
                                                 <p className="text-sm">No new notifications</p>
                                             </div>
                                         ) : (
-                                            localNotifications.map((notif: any) => (
+                                            localNotifications.map((notif: Notification) => (
                                                 <div
                                                     key={notif.id}
                                                     className={`p-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${!notif.read_at ? 'cursor-pointer bg-red-50/50 dark:bg-red-900/10' : ''} ${markingNotifications.has(notif.id) ? 'opacity-50' : ''}`}

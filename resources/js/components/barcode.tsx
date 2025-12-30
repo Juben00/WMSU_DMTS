@@ -3,7 +3,6 @@ import { Download, Copy } from 'lucide-react';
 import { Document, Packer, Paragraph, ImageRun, TextRun, AlignmentType, HeadingLevel } from 'docx';
 import { saveAs } from 'file-saver';
 import { format } from 'date-fns';
-import Barcode from 'react-barcode';
 
 interface BarcodeProps {
     barcode_path?: string;
@@ -18,7 +17,6 @@ const BarcodeComponent: React.FC<BarcodeProps> = ({
 }) => {
     const [copied, setCopied] = useState(false);
     const [downloading, setDownloading] = useState(false);
-    const barcodeRef = useRef<HTMLDivElement>(null);
 
     const handleCopy = async () => {
         if (barcode_value) {

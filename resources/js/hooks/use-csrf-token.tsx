@@ -21,11 +21,11 @@ export function useCsrfToken() {
             }
 
             // Update window object for axios compatibility
-            (window as any).csrfToken = csrfToken;
+            (window as unknown as { csrfToken: string }).csrfToken = csrfToken;
 
             // Update axios default header if axios is available
-            if ((window as any).axios) {
-                (window as any).axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+            if ((window as unknown as { axios: any }).axios) {
+                (window as unknown as { axios: any }).axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
             }
 
         }

@@ -140,11 +140,11 @@ const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, documentId
                             showConfirmButton: false
                         });
                     },
-                    onError: (errors: any) => {
+                    onError: (errors: { [key: string]: string }) => {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: errors.message || 'An error occurred while approving the document',
+                            text: Object.values(errors).join('\n') || 'An error occurred while approving the document',
                         });
                     }
                 });

@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { X, FileText, Image as ImageIcon } from 'lucide-react';
 import { useForm } from '@inertiajs/react';
-import { toast } from 'sonner';
 import { usePage } from '@inertiajs/react';
 import Swal from 'sweetalert2';
+import { User } from '@/types';
 
 interface RejectModalProps {
     isOpen: boolean;
@@ -21,7 +21,7 @@ interface FormData {
     comments: string;
     attachment_files: File[];
     forward_to_id: number | null;
-    [key: string]: any;
+    [key: string]: string | number | null | File[];
 }
 
 interface FileWithPreview {
@@ -36,7 +36,7 @@ interface PageProps {
             role: string;
         };
     };
-    [key: string]: any;
+    [key: string]: string | number | null | File[] | User | { user: { role: string } };
 }
 
 const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, documentId }) => {
@@ -141,11 +141,11 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, documentId }
                             showConfirmButton: false
                         });
                     },
-                    onError: (errors: any) => {
+                    onError: (errors: { [key: string]: string }) => {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: errors.message || 'An error occurred while rejecting the document',
+                            text: Object.values(errors).join('\n') || 'An error occurred while rejecting the document',
                         });
                     }
                 });

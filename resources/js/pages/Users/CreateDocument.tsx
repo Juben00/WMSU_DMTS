@@ -17,6 +17,7 @@ import { MultiSelect } from '@/components/ui/multi-select';
 import Swal from 'sweetalert2';
 import { FileText, FileCheck, Users, Building, Upload, ArrowLeft, RefreshCw, Star, ClipboardList, Megaphone, Info, CheckCircle, AlertCircle, Clock, Mail, Plane, MapPin, PartyPopper, Receipt, GraduationCap, CreditCard, Briefcase, FileSignature, FolderOpen, Calendar, ShoppingCart, File } from 'lucide-react';
 import Spinner from '@/components/spinner';
+import { AxiosError } from 'axios';
 
 type FormData = {
     subject: string;
@@ -57,7 +58,7 @@ const CreateDocument = ({ auth, departments }: Props) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDragActive, setIsDragActive] = useState(false);
     const [isGeneratingOrderNumber, setIsGeneratingOrderNumber] = useState(false);
-    const { data, setData, post, processing, errors } = useForm<FormData>({
+    const { data, setData, processing, errors } = useForm<FormData>({
         subject: '',
         order_number: '',
         document_type: 'special_order',
@@ -139,9 +140,10 @@ const CreateDocument = ({ auth, departments }: Props) => {
                 throw new Error("No order number received from server");
             }
 
-        } catch (error: any) {
-            const status = error.response?.status;
-            console.error(`Error generating order number (attempt ${retryCount + 1}):`, error.response?.data?.error || error.message);
+        } catch (error: unknown) {
+            const errorResponse = error as AxiosError;
+            const status = errorResponse.response?.status;
+            console.error(`Error generating order number (attempt ${retryCount + 1}):`, (errorResponse.response?.data as { error: string })?.error as string || errorResponse.message as string);
 
             // Handle CSRF 419 errors with automatic retry
             if (status === 419 && retryCount < 3) {
@@ -179,7 +181,7 @@ const CreateDocument = ({ auth, departments }: Props) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error Generating Order Number',
-                    text: error.response?.data?.error || 'Failed to generate order number. Please try again.',
+                    text: (errorResponse.response?.data as { error: string })?.error as string || errorResponse.message as string || 'Failed to generate order number. Please try again.',
                     confirmButtonColor: '#b91c1c',
                 }).then((result) => {
                     if (result.isConfirmed) {

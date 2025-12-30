@@ -43,7 +43,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ isOpen, onClose, documentId }
     const [files, setFiles] = useState<FileWithPreview[]>([]);
     const { auth } = usePage<PageProps>().props;
 
-    const { post, processing, setData, reset, data } = useForm<FormData>({
+    const { post, processing, setData, reset } = useForm<FormData>({
         status: 'returned',
         comments: '',
         attachment_files: [],
@@ -134,11 +134,11 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ isOpen, onClose, documentId }
                             showConfirmButton: false
                         });
                     },
-                    onError: (errors: any) => {
+                    onError: (errors: { [key: string]: string }) => {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: errors.message || 'An error occurred while returning the document',
+                            text: Object.values(errors).join('\n') || 'An error occurred while returning the document',
                         });
                     }
                 });

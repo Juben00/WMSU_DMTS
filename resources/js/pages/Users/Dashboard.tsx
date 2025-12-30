@@ -14,6 +14,13 @@ import {
 } from 'lucide-react';
 import TabHeader from '@/components/User/tab-header';
 
+interface Activity {
+    status: string;
+    order_number: string;
+    subject: string;
+    created_at: string;
+}
+
 const statCards = [
     {
         key: 'totalDocuments',
@@ -75,7 +82,18 @@ const getStatusColor = (status: string) => {
 };
 
 const Dashboard = () => {
-    const [stats, setStats] = useState<any>(null)
+    const [stats, setStats] = useState<{
+        totalDocuments: number;
+        pendingDocuments: number;
+        completedDocuments: number;
+        publishedDocuments: number;
+        recentActivities: {
+            status: string;
+            order_number: string;
+            subject: string;
+            created_at: string;
+        }[];
+    } | null>(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -123,7 +141,7 @@ const Dashboard = () => {
                                             {loading ? (
                                                 <div className="h-6 w-8 bg-gray-200 dark:bg-gray-600 animate-pulse rounded mt-1" />
                                             ) : (
-                                                <p className={`text-2xl font-bold ${card.color}`}>{stats?.[card.key] || 0}</p>
+                                                <p className={`text-2xl font-bold ${card.color}`}>{(stats?.[card.key as keyof typeof stats] as number) || 0}</p>
                                             )}
                                         </div>
                                     </div>
@@ -154,7 +172,7 @@ const Dashboard = () => {
                                         </div>
                                     ))
                                 ) : stats?.recentActivities?.length ? (
-                                    stats.recentActivities.map((activity: any, idx: number) => (
+                                    stats.recentActivities.map((activity: (typeof stats.recentActivities)[number], idx: number) => (
                                         <div
                                             key={idx}
                                             className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors cursor-pointer hover:shadow-md"

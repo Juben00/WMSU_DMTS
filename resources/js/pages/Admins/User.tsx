@@ -85,8 +85,9 @@ export default function Admins({ users, departments, auth, departmentsForUserCre
                     onSuccess: () => {
                         toast.success(`User ${action}d successfully`);
                     },
-                    onError: (errors: any) => {
-                        toast.error(`Failed to ${action} user. Please try again.`);
+                    onError: (errors: { [key: string]: string }) => {
+                        const errorMessages = Object.values(errors).join('\n');
+                        toast.error(`Failed to ${action} user. Please try again.` + errorMessages);
                     }
                 });
             }
@@ -108,8 +109,9 @@ export default function Admins({ users, departments, auth, departmentsForUserCre
                     onSuccess: () => {
                         toast.success('User deleted successfully');
                     },
-                    onError: (errors: any) => {
-                        toast.error('Failed to delete user. Please try again.');
+                    onError: (errors: { [key: string]: string }) => {
+                        const errorMessages = Object.values(errors).join('\n');
+                        toast.error('Failed to delete user. Please try again.' + errorMessages);
                     }
                 });
             }
@@ -165,8 +167,9 @@ export default function Admins({ users, departments, auth, departmentsForUserCre
                 setData('new_password', '');
                 setData('confirm_password', '');
             },
-            onError: (errors: any) => {
-                toast.error('Failed to change password. Please try again.');
+            onError: (errors: { [key: string]: string }) => {
+                const errorMessages = Object.values(errors).join('\n');
+                toast.error('Failed to change password. Please try again.' + errorMessages);
             }
         });
     };
@@ -226,7 +229,7 @@ export default function Admins({ users, departments, auth, departmentsForUserCre
                                         post={post}
                                         setData={setData}
                                         data={data}
-                                        errors={errors}
+                                        errors={errors as { first_name: string; last_name: string; middle_name: string; suffix: string; gender: string; department_id: string; position: string; email: string; }}
                                         reset={reset}
                                     />
                                 ) : (
@@ -237,7 +240,7 @@ export default function Admins({ users, departments, auth, departmentsForUserCre
                                         post={post}
                                         setData={setData}
                                         data={data}
-                                        errors={errors}
+                                        errors={errors as { first_name: string; last_name: string; middle_name: string; suffix: string; gender: string; department_id: string; position: string; email: string; }}
                                         reset={reset}
                                     />
                                 )}
@@ -417,7 +420,7 @@ export default function Admins({ users, departments, auth, departmentsForUserCre
                                 put={put}
                                 setData={setData}
                                 data={data}
-                                errors={errors}
+                                errors={errors as { first_name: string; last_name: string; middle_name: string; suffix: string; gender: string; department_id: string; position: string; email: string; new_password: string; confirm_password: string; }}
                                 reset={reset}
                             />
                         )}

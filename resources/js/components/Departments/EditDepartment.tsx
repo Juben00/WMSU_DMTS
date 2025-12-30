@@ -13,10 +13,26 @@ interface Props {
     department: Departments;
     setIsEditDialogOpen: (value: boolean) => void;
     processing: boolean;
-    put: (url: string, options: any) => void;
-    setData: (key: string, value: any) => void;
-    data: any;
-    errors: any;
+    put: (url: string, options: {
+        onSuccess: () => void;
+        onError: (errors: { [key: string]: string }) => void;
+    }) => void;
+    setData: (key: string, value: string) => void;
+    data: {
+        name: string;
+        code: string;
+        is_presidential: string;
+        description: string;
+        type: string;
+    };
+    errors: {
+        name: string;
+        code: string;
+        is_presidential: string;
+        description: string;
+        type: string;
+        [key: string]: string;
+    };
     reset: () => void;
 }
 
@@ -26,7 +42,8 @@ export default function EditDepartment({ department, setIsEditDialogOpen, proces
     useEffect(() => {
         setData('name', department.name);
         setData('code', department.code);
-        setData('description', department.description);
+        setData('is_presidential', department.is_presidential?.toString() || 'false');
+        setData('description', department.description || '');
         setData('type', department.type);
     }, [department, setData]);
 
@@ -38,8 +55,9 @@ export default function EditDepartment({ department, setIsEditDialogOpen, proces
                 setIsEditDialogOpen(false);
                 reset();
             },
-            onError: (errors: any) => {
-                toast.error('Failed to update department. Please try again.');
+            onError: (errors: { [key: string]: string }) => {
+                const errorMessages = Object.values(errors).join('\n');
+                toast.error(errorMessages);
             },
         });
     };
@@ -76,7 +94,7 @@ export default function EditDepartment({ department, setIsEditDialogOpen, proces
                     <div className="">
                         <Label htmlFor="is_presidential" className="dark:text-gray-200">Presidential</Label>
                         <div className="flex-1 flex justify-center gap-2">
-                            <Switch id="is_presidential" checked={data.is_presidential} onCheckedChange={(checked) => setData('is_presidential', checked)} />
+                            <Switch id="is_presidential" checked={data.is_presidential === 'true'} onCheckedChange={(checked) => setData('is_presidential', checked ? 'true' : 'false')} />
                         </div>
                     </div>
                 </div>
