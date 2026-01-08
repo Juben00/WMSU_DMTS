@@ -33,11 +33,11 @@ const AccountDetailsCard: React.FC<Props> = ({ user }) => {
     return (
         <div className="space-y-6">
             {/* Profile Header Card */}
-            <Card className="border-red-100 dark:border-red-900/30 shadow-lg bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+            <Card className="border-gray-100 dark:border-gray-900/30 shadow-lg bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
                 <CardContent className="p-8">
                     <div className="flex items-start space-x-6">
                         <div className="relative">
-                            <Avatar className="h-16 w-16 md:h-32 md:w-32 border-4 border-red-100 dark:border-red-900/50 shadow-xl ring-4 ring-red-50 dark:ring-red-950/50">
+                            <Avatar className="h-16 w-16 md:h-32 md:w-32 border-4 border-gray-100 dark:border-gray-900/50 shadow-xl ring-4 ring-red-50 dark:ring-red-950/50">
                                 <AvatarImage src={user.avatar ?? "/placeholder.svg"} alt={`${user.first_name} ${user.last_name}`} />
                                 <AvatarFallback className="text-sm md:text-2xl font-bold bg-gradient-to-br from-red-500 to-red-600 text-white">
                                     {getInitials(user.first_name, user.last_name)}
@@ -69,8 +69,8 @@ const AccountDetailsCard: React.FC<Props> = ({ user }) => {
             {/* Information Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Role Card */}
-                <Card className="border-red-100 dark:border-red-900/30 hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
-                    <CardHeader className="pb-4">
+                <Card className="border-gray-100 dark:border-gray-900/30 hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+                    <CardHeader >
                         <div className="flex items-center space-x-4">
                             <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-red-600 shadow-lg">
                                 <Shield className="h-6 w-6 text-white" />
@@ -84,8 +84,8 @@ const AccountDetailsCard: React.FC<Props> = ({ user }) => {
                 </Card>
 
                 {/* Department Card */}
-                <Card className="border-red-100 dark:border-red-900/30 hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
-                    <CardHeader className="pb-4">
+                <Card className="border-gray-100 dark:border-gray-900/30 hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+                    <CardHeader >
                         <div className="flex items-center space-x-4">
                             <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-red-600 shadow-lg">
                                 <Building className="h-6 w-6 text-white" />
@@ -103,8 +103,8 @@ const AccountDetailsCard: React.FC<Props> = ({ user }) => {
                 </Card>
 
                 {/* Email Status Card */}
-                <Card className="border-red-100 dark:border-red-900/30 hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
-                    <CardHeader className="pb-4">
+                <Card className="border-gray-100 dark:border-gray-900/30 hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+                    <CardHeader >
                         <div className="flex items-center space-x-4">
                             <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-red-600 shadow-lg">
                                 <Mail className="h-6 w-6 text-white" />
@@ -118,7 +118,7 @@ const AccountDetailsCard: React.FC<Props> = ({ user }) => {
                                         variant="outline"
                                         className={`px-3 py-1.5 text-sm font-semibold border-2 ${user.email_verified_at
                                             ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800"
-                                            : "bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800"
+                                            : "bg-red-50 text-red-700 border-gray-200 dark:bg-red-950 dark:text-red-300 dark:border-gray-800"
                                             }`}
                                     >
                                         {user.email_verified_at ? (
@@ -140,8 +140,8 @@ const AccountDetailsCard: React.FC<Props> = ({ user }) => {
                 </Card>
 
                 {/* Member Since Card */}
-                <Card className="border-red-100 dark:border-red-900/30 hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
-                    <CardHeader className="pb-4">
+                <Card className="border-gray-100 dark:border-gray-900/30 hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+                    <CardHeader >
                         <div className="flex items-center space-x-4">
                             <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-red-600 shadow-lg">
                                 <CalendarDays className="h-6 w-6 text-white" />
@@ -158,7 +158,7 @@ const AccountDetailsCard: React.FC<Props> = ({ user }) => {
             </div>
 
             {/* Account Information Card */}
-            <Card className="border-red-100 dark:border-red-900/30 shadow-lg bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+            <Card className="border-gray-100 dark:border-gray-900/30 shadow-lg bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
                 <CardHeader>
                     <div className="flex items-center space-x-4">
                         <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-600 shadow-lg">

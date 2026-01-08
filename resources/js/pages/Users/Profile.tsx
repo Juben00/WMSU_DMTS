@@ -9,6 +9,7 @@ import AccountDetailsCard from '@/components/profile/AccountDetailsCard';
 import ChangePasswordForm from '@/components/profile/ChangePasswordForm';
 import { User as UserIcon, Settings } from 'lucide-react';
 import Spinner from '@/components/spinner';
+import TabHeader from '../../components/User/tab-header';
 
 interface Props {
     user: User;
@@ -104,15 +105,8 @@ const Profile = ({ user }: Props) => {
                     {/* Header Section */}
                     <div className="mb-8">
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-lg">
-                                    <UserIcon className="w-8 h-8 text-white" />
-                                </div>
-                                <div>
-                                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Profile Settings</h1>
-                                    <p className="text-sm md:text-md lg:text-lg text-gray-600 dark:text-gray-300 mt-1">Manage your account information and preferences</p>
-                                </div>
-                            </div>
+                            <TabHeader title="Profile"
+                                description="Manage your account information and change your password here."></TabHeader>
                         </div>
                     </div>
 

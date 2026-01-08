@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
@@ -16,6 +16,7 @@ import AddDepartment from '@/components/Departments/AddDepartment';
 import Swal from 'sweetalert2';
 import Spinner from '@/components/spinner';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -189,32 +190,43 @@ export default function Departments({ departments, filters }: Props) {
 
                 {/* View Office Dialog */}
                 <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-                    <DialogContent>
+                    <DialogContent className="sm:max-w-lg">
                         <DialogHeader>
                             <DialogTitle>Department Details</DialogTitle>
+                            <DialogDescription>Quick snapshot of the selected department.</DialogDescription>
                         </DialogHeader>
                         {selectedOffice && (
-                            <div className="space-y-4">
-                                <div>
-                                    <Label>Department Name</Label>
-                                    <p className="text-sm">{selectedOffice.name}</p>
+                            <div className="space-y-6">
+                                <div className="flex flex-wrap gap-2">
+                                    <Badge variant="outline" className="capitalize">
+                                        {selectedOffice.type}
+                                    </Badge>
+                                    <Badge variant={selectedOffice.is_presidential ? 'default' : 'secondary'}>
+                                        {selectedOffice.is_presidential ? 'Presidential' : 'Non-presidential'}
+                                    </Badge>
                                 </div>
-                                <div>
-                                    <Label>Department Code</Label>
-                                    <p className="text-sm">{selectedOffice.code}</p>
-                                </div>
-                                <div>
-                                    <Label>Description</Label>
-                                    <p className="text-sm">{selectedOffice.description}</p>
-                                </div>
-                                <div>
-                                    <Label>Type</Label>
-                                    <p className="text-sm capitalize">{selectedOffice.type}</p>
-                                </div>
-                                <div>
-                                    <Label>Created At</Label>
-                                    <p className="text-sm">{format(new Date(selectedOffice.created_at), 'MMMM d, yyyy h:mm a')}</p>
-                                </div>
+                                <dl className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-1 sm:col-span-2">
+                                        <Label className="text-xs uppercase text-muted-foreground">Department Name</Label>
+                                        <p className="text-sm font-medium text-foreground">{selectedOffice.name}</p>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs uppercase text-muted-foreground">Department Code</Label>
+                                        <p className="text-sm font-medium tracking-wide text-foreground">{selectedOffice.code}</p>
+                                    </div>
+                                    <div className="space-y-1 sm:col-span-2">
+                                        <Label className="text-xs uppercase text-muted-foreground">Description</Label>
+                                        <p className="text-sm text-muted-foreground">
+                                            {selectedOffice.description || 'No description provided.'}
+                                        </p>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs uppercase text-muted-foreground">Created At</Label>
+                                        <p className="text-sm text-muted-foreground">
+                                            {format(new Date(selectedOffice.created_at), 'MMMM d, yyyy h:mm a')}
+                                        </p>
+                                    </div>
+                                </dl>
                             </div>
                         )}
                     </DialogContent>

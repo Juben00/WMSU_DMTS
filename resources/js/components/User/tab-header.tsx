@@ -1,4 +1,5 @@
-import { BarChart3, Building, FileText } from "lucide-react"
+import { profile } from "console";
+import { BarChart3, Building, FileText, PersonStandingIcon } from "lucide-react"
 
 interface TabHeaderProps {
     title: string
@@ -9,6 +10,7 @@ const icons = {
     documents: <FileText className="w-7 h-7 text-white" />,
     department: <Building className="w-7 h-7 text-white" />,
     dashboard: <BarChart3 className="w-7 h-7 text-white" />,
+    profile: <PersonStandingIcon className="w-7 h-7 text-white" />,
 }
 
 export default function TabHeader({ title, description }: TabHeaderProps) {

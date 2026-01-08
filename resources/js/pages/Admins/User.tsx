@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, User } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { useForm, router } from '@inertiajs/react';
@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import AddNewUser from '@/components/Admin/AddUser';
 import Spinner from '@/components/spinner';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -344,62 +345,58 @@ export default function Admins({ users, departments, auth, departmentsForUserCre
 
                 {/* Admin Details Dialog */}
                 <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-                    <DialogContent>
+                    <DialogContent className="sm:max-w-2xl">
                         <DialogHeader>
-                            <DialogTitle className="text-3xl font-bold text-gray-900 dark:text-white">Admin Details</DialogTitle>
+                            <DialogTitle>User Details</DialogTitle>
+                            <DialogDescription>Complete profile information for the selected user.</DialogDescription>
                         </DialogHeader>
                         {selectedAdmin && (
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <Label>First Name</Label>
-                                        <p className="text-sm">{selectedAdmin.first_name}</p>
+                            <div className="space-y-6">
+                                <div className="flex flex-wrap gap-2">
+                                    <Badge variant="outline" className="capitalize">
+                                        {selectedAdmin.role}
+                                    </Badge>
+                                    <Badge variant={selectedAdmin.is_active ? 'default' : 'secondary'}>
+                                        {selectedAdmin.is_active ? 'Active' : 'Inactive'}
+                                    </Badge>
+                                    <Badge variant="outline" className="capitalize">
+                                        {selectedAdmin.gender}
+                                    </Badge>
+                                </div>
+                                <dl className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-1">
+                                        <Label className="text-xs uppercase text-muted-foreground">First Name</Label>
+                                        <p className="text-sm font-medium text-foreground">{selectedAdmin.first_name}</p>
                                     </div>
-                                    <div>
-                                        <Label>Last Name</Label>
-                                        <p className="text-sm">{selectedAdmin.last_name}</p>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs uppercase text-muted-foreground">Last Name</Label>
+                                        <p className="text-sm font-medium text-foreground">{selectedAdmin.last_name}</p>
                                     </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <Label>Middle Name</Label>
-                                        <p className="text-sm">{selectedAdmin.middle_name || 'N/A'}</p>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs uppercase text-muted-foreground">Middle Name</Label>
+                                        <p className="text-sm text-muted-foreground">{selectedAdmin.middle_name || 'N/A'}</p>
                                     </div>
-                                    <div>
-                                        <Label>Suffix</Label>
-                                        <p className="text-sm">{selectedAdmin.suffix || 'N/A'}</p>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs uppercase text-muted-foreground">Suffix</Label>
+                                        <p className="text-sm text-muted-foreground">{selectedAdmin.suffix || 'N/A'}</p>
                                     </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <Label>Gender</Label>
-                                        <p className="text-sm">{selectedAdmin.gender}</p>
+                                    <div className="space-y-1 sm:col-span-2">
+                                        <Label className="text-xs uppercase text-muted-foreground">Department</Label>
+                                        <p className="text-sm font-medium text-foreground">{selectedAdmin.department?.name || 'N/A'}</p>
                                     </div>
-                                    <div>
-                                        <Label>Status</Label>
-                                        <p className="text-sm">
-                                            <span className={`px-2 py-1 rounded-full text-xs ${selectedAdmin.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                                                {selectedAdmin.is_active ? 'Active' : 'Inactive'}
-                                            </span>
-                                        </p>
+                                    <div className="space-y-1 sm:col-span-2">
+                                        <Label className="text-xs uppercase text-muted-foreground">Position</Label>
+                                        <p className="text-sm text-muted-foreground">{selectedAdmin.position}</p>
                                     </div>
-                                </div>
-                                <div>
-                                    <Label>Department</Label>
-                                    <p className="text-sm">{selectedAdmin.department?.name || 'N/A'}</p>
-                                </div>
-                                <div>
-                                    <Label>Position</Label>
-                                    <p className="text-sm">{selectedAdmin.position}</p>
-                                </div>
-                                <div>
-                                    <Label>Email</Label>
-                                    <p className="text-sm">{selectedAdmin.email}</p>
-                                </div>
-                                <div>
-                                    <Label>Created At</Label>
-                                    <p className="text-sm">{format(new Date(selectedAdmin.created_at), 'MMMM d, yyyy h:mm a')}</p>
-                                </div>
+                                    <div className="space-y-1 sm:col-span-2">
+                                        <Label className="text-xs uppercase text-muted-foreground">Email</Label>
+                                        <p className="text-sm font-mono text-foreground">{selectedAdmin.email}</p>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs uppercase text-muted-foreground">Created At</Label>
+                                        <p className="text-sm text-muted-foreground">{format(new Date(selectedAdmin.created_at), 'MMMM d, yyyy h:mm a')}</p>
+                                    </div>
+                                </dl>
                             </div>
                         )}
                     </DialogContent>
