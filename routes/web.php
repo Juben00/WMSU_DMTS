@@ -59,10 +59,11 @@ Route::middleware(['auth', 'verified', 'require_password_change'])->group(functi
         // Activity Log Route
         Route::get('/Admin/activity-logs', [UserActivityLogController::class, 'index'])->name('admin.activity-logs');
 
-        // Analytics & Reporting Routes
-        Route::get('/Admin/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics');
-        Route::post('/Admin/analytics/reports', [AnalyticsController::class, 'generateReport'])->name('admin.analytics.reports');
     });
+
+    // Analytics & Reporting Routes
+    Route::get('/Admin/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics');
+    Route::post('/Admin/analytics/reports', [AnalyticsController::class, 'generateReport'])->name('admin.analytics.reports');
 
     // User Management Routes
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

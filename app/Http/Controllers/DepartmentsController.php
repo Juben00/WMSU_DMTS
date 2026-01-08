@@ -21,6 +21,7 @@ class DepartmentsController extends Controller
         $departments = Departments::all();
         return Inertia::render('Admins/Departments', [
             'departments' => $departments,
+            'filters' => request()->only(['name', 'code', 'type'])
         ]);
     }
 

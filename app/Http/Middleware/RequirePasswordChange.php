@@ -24,7 +24,12 @@ class RequirePasswordChange
 
             if (in_array($user->role, $rolesRequiringPasswordChange) && $user->needsPasswordChange()) {
                 // Allow access to password change route and logout
-                if ($request->routeIs('password.change') || $request->routeIs('password.update') || $request->routeIs('logout')) {
+                if (
+                    $request->routeIs('password.change') ||
+                    $request->routeIs('password.update') ||
+                    $request->routeIs('users.password.update') ||
+                    $request->routeIs('logout')
+                ) {
                     return $next($request);
                 }
 

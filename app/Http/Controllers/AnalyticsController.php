@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Document;
@@ -9,6 +10,7 @@ use App\Models\DocumentRecipient;
 use App\Models\UserActivityLog;
 use App\Models\DocumentActivityLog;
 use App\Models\Departments;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Inertia\Inertia;
@@ -18,6 +20,10 @@ class AnalyticsController extends Controller
 {
     public function index()
     {
+        if ($redirect = $this->redirectIfNotSuperadmin()) {
+            return $redirect;
+        }
+
         // Get date range from request or default to last 30 days
         $dateFrom = request('date_from', Carbon::now()->subDays(30)->format('Y-m-d'));
         $dateTo = request('date_to', Carbon::now()->format('Y-m-d'));
@@ -332,6 +338,10 @@ class AnalyticsController extends Controller
 
     public function generateReport(Request $request)
     {
+        if ($redirect = $this->redirectIfNotSuperadmin()) {
+            return $redirect;
+        }
+
         $request->validate([
             'report_type' => 'required|in:user_activity,document_flow,department_performance,processing_times',
             'date_from' => 'required|date',
@@ -370,6 +380,15 @@ class AnalyticsController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    private function redirectIfNotSuperadmin(): ?RedirectResponse
+    {
+        if (!Auth::check() || Auth::user()->role !== 'superadmin') {
+            return redirect()->route('dashboard');
+        }
+
+        return null;
     }
 
     private function generateUserActivityReport($dateFrom, $dateTo)

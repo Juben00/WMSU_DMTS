@@ -17,9 +17,14 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, ...$role): Response
     {
-        if (!Auth::check() || !in_array(Auth::user()->role, $role)) {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        if (!in_array(Auth::user()->role, $role)) {
             abort(403, 'Unauthorized action.');
         }
+
         return $next($request);
     }
 }

@@ -59,7 +59,7 @@ test('regular user can update password via profile route', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect('/password/change');
+        ->assertRedirect('/profile');
 
     expect(Hash::check('new-password', $user->refresh()->password))->toBeTrue();
 });

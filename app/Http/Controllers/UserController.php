@@ -278,11 +278,11 @@ class UserController extends Controller
         ]);
 
         $user = User::find(Auth::id());
-        $user->password = $request->password;
+        $user->password = Hash::make($request->input('password'));
         $user->markPasswordAsChanged();
         $user->save();
 
-        return back()->with('success', 'Password updated successfully.');
+        return redirect()->route('users.profile')->with('success', 'Password updated successfully.');
     }
 
     public function createDocument()

@@ -42,12 +42,7 @@ class AuthenticatedSessionController extends Controller
             'created_at' => now(),
         ]);
 
-        // ✅ Redirect based on role
-        if (strtolower(Auth::user()->role) === 'superadmin') {
-            return redirect()->route('admin.analytics'); // or dashboard for superadmin
-        }
-
-        return redirect()->route('dashboard'); // normal user
+        return redirect()->route('dashboard');
     }
 
 
