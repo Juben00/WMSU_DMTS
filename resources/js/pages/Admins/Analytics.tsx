@@ -76,15 +76,6 @@ export default function Analytics({
 }: AnalyticsProps) {
     const [localFilters, setLocalFilters] = useState(filters);
 
-    console.log(userAnalytics);
-    console.log(documentAnalytics);
-    console.log(departmentAnalytics);
-    console.log(activityAnalytics);
-    console.log(processingTimeAnalytics);
-    console.log(filters);
-
-
-
     const handleFilterChange = (key: string, value: string) => {
         setLocalFilters(prev => ({ ...prev, [key]: value }));
     };
