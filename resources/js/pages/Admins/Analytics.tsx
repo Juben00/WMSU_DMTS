@@ -24,6 +24,7 @@ import ReportGenerator from '@/components/Admin/ReportGenerator';
 
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart as RechartsBarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 import { BreadcrumbItem } from '@/types';
+import { log } from 'console';
 
 interface AnalyticsProps {
     userAnalytics: {
@@ -74,6 +75,14 @@ export default function Analytics({
     filters
 }: AnalyticsProps) {
     const [localFilters, setLocalFilters] = useState(filters);
+
+    console.log(userAnalytics);
+    console.log(documentAnalytics);
+    console.log(departmentAnalytics);
+    console.log(activityAnalytics);
+    console.log(processingTimeAnalytics);
+    console.log(filters);
+
 
 
     const handleFilterChange = (key: string, value: string) => {

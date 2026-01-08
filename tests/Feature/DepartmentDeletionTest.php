@@ -59,13 +59,11 @@ class DepartmentDeletionTest extends TestCase
 
     public function test_non_superadmin_cannot_delete_department()
     {
-        // Create a regular user
-        /** @var User $user */
         $user = User::factory()->create([
-            'role' => 'user'
+            'role' => 'user', // or whatever is NOT superadmin
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'),
         ]);
-
-        // Create a department
         $department = Departments::factory()->create();
 
         $this->actingAs($user)

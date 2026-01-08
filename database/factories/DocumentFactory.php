@@ -28,7 +28,6 @@ class DocumentFactory extends Factory
             'barcode_value' => $this->faker->numerify('BRC-#####'),
             'owner_id' => User::factory(),
             'department_id' => null,
-            'through_user_ids' => null,
             'created_at' => $this->faker->dateTimeBetween('-30 days', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-30 days', 'now'),
         ];
